@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'iotdb.cesdfiypdndn.us-east-1.rds.amazonaws.com'
 app.config['MYSQL_USER'] = 'admin'
-app.config['MYSQL_PASSWORD'] = 'jaynalgenez21K'
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'IOT_TEST'
 
 mysql = MySQL(app)
