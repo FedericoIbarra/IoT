@@ -3,7 +3,7 @@ from flask import request
 from flask_mysqldb import MySQL
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='front-iot/src/dist/')
 
 app.config['MYSQL_HOST'] = 'iotdb.cesdfiypdndn.us-east-1.rds.amazonaws.com'
 app.config['MYSQL_USER'] = 'admin'
@@ -14,12 +14,32 @@ mysql = MySQL(app)
 
 @app.route('/api/data', methods=['POST', 'GET'])
 def data():
+    cur = mysql.connection.cursor()
+    
     if request.method == 'POST':
-        return 'Data recived'
+        data = request.stream.read()
+        if(data):
+            print(data)
+            #cur.execute('''''')
+        return '100'
     else:
-        cur = mysql.connection.cursor()
         #cur.execute('''SELECT user, host FROM mysql.user''')
+        return '100'
+    
+    cur.close()
+
+@app.route('/api', methods=['GET'])
+def api():
+    cur = mysql.connection.cursor()
+
+    if request.method == 'GET':
         cur.execute('''SELECT * FROM IOT_TEST.DUMMY''')
         sel = cur.fetchall()
-        cur.close()
         return str(sel)
+
+    cur.close()
+
+@app.route('/', methods=['GET'])
+def stvue():
+    return app.send_static_file('index.html')
+
