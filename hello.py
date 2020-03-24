@@ -7,7 +7,7 @@ app = Flask(__name__, static_folder='front-iot/src/dist/')
 
 app.config['MYSQL_HOST'] = 'iotdb.cesdfiypdndn.us-east-1.rds.amazonaws.com'
 app.config['MYSQL_USER'] = 'admin'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'jaynalgenez21K'
 app.config['MYSQL_DB'] = 'IOT_TEST'
 
 mysql = MySQL(app)
@@ -20,13 +20,16 @@ def data():
         data = request.stream.read()
         if(data):
             print(data)
-            #cur.execute('''''')
-        return '100'
+            cur.execute('INSERT INTO IOT_TEST.DUMMY (data) VALUES ("'+str(data)+'")')
+            mysql.connection.commit()
+            cur.close()
+            return '100'
+            
     else:
         #cur.execute('''SELECT user, host FROM mysql.user''')
+        cur.close()
         return '100'
     
-    cur.close()
 
 @app.route('/api', methods=['GET'])
 def api():

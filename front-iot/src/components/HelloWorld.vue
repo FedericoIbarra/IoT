@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
-    <h1>Si jala hdspm!</h1>
+    <h1>Equipo 5</h1>
+    <h3>Front-End</h3>
     <p> {{ info }} </p>
   </div>
 </template>
