@@ -1,7 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
-#include <DHT11.h>
-#include <Wire.h> //BH1750 IIC Mode 
+#include <DHT11.h> 
 #include <Servo.h>
 // Parametros y variables para conexion a WIFI y server
 const char* ssid = "Infinitum2019";
@@ -20,9 +19,6 @@ int buf[10],temp;
 DHT11 dht11(SensorTH);
 //String data = "Temperature: " + temp;
 //bool begin(WiFiClient &client, String host, uint16_t port, String uri = "/api/data", bool https = false);
-//Luminosidad
-int BH1750address = 0x23; //setting i2c address
-byte buff[2];
 /////////
 //Actuador
 Servo myservo;  // create servo object to control a servo
@@ -36,8 +32,6 @@ void setup()
    pinMode(SensorTH, INPUT);
    //Set de pin analogico para PH
    pinMode(SensorPin, INPUT);
-   //Initializes the I2C 
-   Wire.begin(); 
    //Set pin para el actuador
    myservo.attach(2);  
    // Conectar WiFi
@@ -69,7 +63,6 @@ void loop()
    String myString;
    String myString1;
    String myString2;
-   String myString3;
    if (http.begin(client, host, port)) //Iniciar conexión
    {
       Serial.print("[HTTP] GET...\n");
@@ -140,18 +133,6 @@ void loop()
         Serial.println();    
       }
       ////////////////
-      //Sensor de luminosidad
-      int i;
-      uint16_t val=0;
-      BH1750_Init(BH1750address);
-      delay(200);
-      if(2==BH1750_Read(BH1750address))
-      {
-        val=((buff[0]<<8)|buff[1])/1.2;
-        Serial.print(val,DEC);     
-        Serial.println("[lx]"); 
-        myString3 = String(val);
-      }
       ///////////////
       int httpSensor = http.POST("Ph:" + myString + "," +"Temperatura:" + myString1 + "," +"Humedad:" + myString2 +","+"Luminosidad:" + myString3 +",");
       String payload2 = http.getString();
@@ -166,24 +147,4 @@ void loop()
    }
  
    delay(30000);
-}
-int BH1750_Read(int address) //
-{
-  int i=0;
-  Wire.beginTransmission(address);
-  Wire.requestFrom(address, 2);
-  while(Wire.available()) //
-  {
-    buff[i] = Wire.receive();  // receive one byte
-    i++;
-  }
-  Wire.endTransmission();  
-  return i;
-}
-
-void BH1750_Init(int address) 
-{
-  Wire.beginTransmission(address);
-  Wire.send(0x10);//1lx reolution 120ms
-  Wire.endTransmission();
 }
