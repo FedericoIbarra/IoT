@@ -1,16 +1,14 @@
 <template>
   <div class="hello">
-    <h1>Equipo 5</h1>
-    <h3>Front-End</h3>
+    <h3>Datos</h3>
     <p> {{ info }} </p>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-
 export default {
-  name: 'HelloWorld',
+  name: 'Data',
   props: {
     msg: String
   },
@@ -21,7 +19,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://54.175.166.57:5000/api')	      
+      .get('http://54.175.166.57:5000/api')
       .then(response => (this.info = response))
   }
 }
@@ -29,8 +27,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 h3 {
-  margin: 40px 0 0;
+  margin: 1.5em;
 }
 ul {
   list-style-type: none;
