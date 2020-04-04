@@ -1,6 +1,6 @@
 <template>
-  <div class="regp">
-    <b-navbar toggleable="lg" type="dark" variant="dark" >
+  <div>
+    <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
       <b-navbar-brand href="/"><img alt="Choya logo" src="../assets/Choya.png">Choya Labs</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -43,7 +43,6 @@ export default {
 <style scoped>
   img {
     margin-left: 0.5em;
-    
     height: 2.6em;
   }
   a {
@@ -63,5 +62,7 @@ export default {
   .reg:hover {
     color: #016653;
   }
+
+
 
 </style>

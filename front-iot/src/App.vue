@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <NavBar/>
-    <router-view></router-view>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <NavBar class="navb"/>
+
+    <router-view class="bod"></router-view>
   </div>
 </template>
 
@@ -22,7 +24,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   background-color: #F2F2F2;
+
 }
+
+.navb{
+  margin-bottom: 5em;
+}
+
+
 </style>

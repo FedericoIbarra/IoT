@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>About Us</h1>
+    <h3>Aquí va una poderosa foto de nosotros</h3>
   </div>
 </template>
 
