@@ -78,7 +78,6 @@ h5{
 .imgd{
   width: 100%;
   margin-top: -2em;
-  margin-left: -1em;
 }
 
 .imgi{
