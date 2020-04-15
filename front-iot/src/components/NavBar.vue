@@ -60,7 +60,7 @@
 
 import Logup from './Logup.vue'
 import axios from 'axios'
-//import URL from '../constants.js'
+import URL from '../constants.js'
 
 export default {
   name: 'NavBar',
@@ -84,7 +84,7 @@ export default {
         //Post request
         let body = this.form.user + ',' + this.form.password;
         axios
-          .post('http://127.0.0.1:5000/api/login', body)
+          .post(URL+'/api/login', body)
           .then(response => (this.res = response));
 
         if (this.res == this.form.username)
