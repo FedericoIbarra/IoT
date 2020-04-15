@@ -52,17 +52,19 @@ def stvue():
 @app.route('/api/login', methods=['POST'])
 def login():
     cur = mysql.connection.cursor()
-    content = request.get_json()
-    print("\ndata: \n"+ str(content) +"\n")
+    data = str(request.get_data())
+    data = data[2:len(data)-1]
+    print("\nData: " + data)
 
+    content = data.split(',')
     cur.execute('SELECT username FROM IOT_TEST.USERS u\
-        WHERE u.username = "'+content['username']+'" and u.pass = "'+content['password']+'";')
+        WHERE u.username = "'+content[0]+'" and u.pass = "'+content[1]+'";')
 
-    sel = cur.fetchall()
+    sel = cur.fetchone()
     mysql.connection.commit()
     cur.close()
-
-    return str(sel)
+    print('Username: ' + str(sel[0]))
+    return str(sel[0])
 
 
 

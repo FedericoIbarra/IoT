@@ -24,7 +24,7 @@
             </b-nav-item>
 
             <b-modal id="modal-ini" title="Iniciar Sesión" hide-footer=true>
-              <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+              <b-form @submit="onSubmit" v-if="show">
                 <b-form-group id="input-group-1"
                               label="Usuario:"
                               label-for="input-1">
@@ -59,6 +59,8 @@
 <script>
 
 import Logup from './Logup.vue'
+import axios from 'axios'
+//import URL from '../constants.js'
 
 export default {
   name: 'NavBar',
@@ -72,24 +74,22 @@ export default {
           password: ''
         },
         show: true,
+        res: '',
         login: false
       }
     },
     methods: {
       onSubmit(evt) {
-        evt.preventDefault()
-        this.login = true;
-      },
-      onReset(evt) {
-        evt.preventDefault()
-        // Reset our form values
-        this.form.user = ''
-        this.form.password = ''
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
+        evt.preventDefault();
+        //Post request
+        let body = this.form.user + ',' + this.form.password;
+        axios
+          .post('http://127.0.0.1:5000/api/login', body)
+          .then(response => (this.res = response));
+
+        if (this.res == this.form.username)
+          this.login = true;
+
       }
     }
 }
