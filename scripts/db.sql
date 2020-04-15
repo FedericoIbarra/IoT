@@ -1,0 +1,16 @@
+CREATE TABLE IOT_TEST.data (
+	idHw VARCHAR(10) PRIMARY KEY,
+    ph FLOAT,
+    temperature FLOAT,
+    times TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IOT_TEST.USERS (
+	idPK INT(2) PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50)  NOT NULL,
+    pass VARCHAR(50)  NOT NULL,
+	email VARCHAR(50)  NOT NULL,
+    plant VARCHAR(50)  NOT NULL,
+    idHw VARCHAR(10),
+    FOREIGN KEY (idHw) REFERENCES data(idHw)
+ );

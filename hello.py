@@ -47,3 +47,41 @@ def api():
 @app.route('/', methods=['GET'])
 def stvue():
     return app.send_static_file('index.html')
+
+#Login
+@app.route('/api/login', methods=['POST'])
+def login():
+    cur = mysql.connection.cursor()
+    content = request.get_json()
+    print("\ndata: \n"+ str(content) +"\n")
+
+    cur.execute('SELECT username FROM IOT_TEST.USERS u\
+        WHERE u.username = "'+content['username']+'" and u.pass = "'+content['password']+'";')
+
+    sel = cur.fetchall()
+    mysql.connection.commit()
+    cur.close()
+
+    return str(sel)
+
+
+
+#LogUp
+@app.route('/api/logup', methods=['POST'])
+def logup():
+    cur = mysql.connection.cursor()
+    content = request.get_json()
+    print("\ndata: \n"+ str(content) +"\n")
+
+
+    cur.execute('INSERT INTO IOT_TEST.USERS (username, pass, email, plant) VALUES (\
+     	"'+str(content['username'])+'",\
+    	"'+str(content['password'])+'",\
+    	"'+str(content['email'])+'",\
+    	"'+str(content['plant'])+'"\
+    );')
+
+    mysql.connection.commit()
+    cur.close()
+
+    return "200"
