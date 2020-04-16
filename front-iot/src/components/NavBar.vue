@@ -16,7 +16,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto" v-if="!login">
             <b-nav-item>
-              <p class="reg" v-b-modal.modal-reg>Registrarse</p>
+              <p class="reg" v-b-modal.modalreg>Registrarse</p>
             </b-nav-item>
 
             <b-nav-item>

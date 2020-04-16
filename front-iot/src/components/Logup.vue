@@ -2,8 +2,8 @@
 
   <div>
 
-    <b-modal id="modal-reg" title="Iniciar Sesión" hide-footer=true>
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+    <b-modal id="modalreg" title="Iniciar Sesión" ref="modalreg" hide-footer=true>
+      <b-form @submit="onSubmit" v-if="show">
         <b-form-group id="username"
                       label="Usuario:"
                       label-for="input-1">
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import URL from '../constants.js'
 
   export default {
     name: 'Logup',
@@ -67,25 +69,27 @@
           password2: '',
           plant: ''
         },
-        show: true,
-        login: false
+        show: true
       }
     },
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
-        alert(JSON.stringify(this.form))
-      },
-      onReset(evt) {
-        evt.preventDefault()
-        // Reset our form values
-        this.form.user = ''
-        this.form.password = ''
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
+
+        if (this.form.password1 == this.form.password2) {
+          //Post request
+          let body = this.form.user + ','
+                   + this.form.password1 + ','
+                   + this.form.email + ','
+                   + this.form.plant;
+
+          axios
+            .post(URL+'/api/logup', body)
+            .then(response => (this.res = response));
+
+          //alert(JSON.stringify(this.form));
+        }
+        this.$refs['modalreg'].hide();
       }
     }
   }

@@ -51,12 +51,13 @@ def stvue():
 #Login
 @app.route('/api/login', methods=['POST'])
 def login():
-    cur = mysql.connection.cursor()
+
     data = str(request.get_data())
     data = data[2:len(data)-1]
-    print("\nData: " + data)
-
+    print("\n\nData: " + data)
     content = data.split(',')
+
+    cur = mysql.connection.cursor()
     cur.execute('SELECT username FROM IOT_TEST.USERS u\
         WHERE u.username = "'+content[0]+'" and u.pass = "'+content[1]+'";')
 
@@ -71,16 +72,18 @@ def login():
 #LogUp
 @app.route('/api/logup', methods=['POST'])
 def logup():
+
+    data = str(request.get_data())
+    data = data[2:len(data)-1]
+    print("\n\nData: " + data)
+    content = data.split(',')
+
     cur = mysql.connection.cursor()
-    content = request.get_json()
-    print("\ndata: \n"+ str(content) +"\n")
-
-
     cur.execute('INSERT INTO IOT_TEST.USERS (username, pass, email, plant) VALUES (\
-     	"'+str(content['username'])+'",\
-    	"'+str(content['password'])+'",\
-    	"'+str(content['email'])+'",\
-    	"'+str(content['plant'])+'"\
+     	"'+str(content[0])+'",\
+    	"'+str(content[1])+'",\
+    	"'+str(content[2])+'",\
+    	"'+str(content[3])+'"\
     );')
 
     mysql.connection.commit()
