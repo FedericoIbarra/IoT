@@ -4,36 +4,35 @@
 
     <b-container fluid>
       <b-row>
-
-        <b-col lg="2">
+        <b-col lg="2" class="col">
           <h5>Nodo: {{hw}}</h5>
           <p>Planta: {{plant}}</p>
-          <p>Estatus: {{status}}</p>
+          <p>Estado: {{status}}</p>
         </b-col>
 
-        <b-col lg="2">
+        <b-col lg="2" class="col">
           <img alt="Choya logo" class="imgf" src="../assets/Choya.png">
         </b-col>
 
-        <b-col lg="2">
+        <b-col lg="2" class="col">
           <h5>Temperatura</h5>
           <p>Actual: {{temperature}}ºC</p>
           <p>Promedio: {{tavg}}ºC</p>
           <p>Rango: {{tmin}}ºC~{{tmax}}ºC</p>
         </b-col>
 
-        <b-col lg="2">
+        <b-col lg="2" class="col">
           <div class="cont" v-bind:style="{ backgroundColor: tColor}"></div>
         </b-col>
 
-        <b-col lg="2">
+        <b-col lg="2" class="col">
           <h5>pH</h5>
           <p>Actual: {{ph}}</p>
           <p>Promedio: {{pavg}}</p>
           <p>Rango: {{pmin}}~{{pmax}}</p>
         </b-col>
 
-        <b-col lg="2">
+        <b-col lg="2" class="col">
           <div class="cont" v-bind:style="{ backgroundColor: pColor}"></div>
         </b-col>
 
@@ -45,6 +44,8 @@
 
 <script>
 import axios from 'axios'
+import URL from '../constants.js'
+
 export default {
   name: 'Dashboard',
   props: {
@@ -69,8 +70,18 @@ export default {
   },
   mounted () {
     axios
-      .get('http://54.175.166.57:5000/api')
-      .then(response => (this.info = response))
+      .get(URL + '/api/data/current')
+      .then(res => {
+        this.ph = res[0];
+        this.temperature = res[1];
+      });
+
+      axios
+        .get(URL + '/api/data/year')
+        .then(res => {
+          this.pavg = res[0];
+          this.tavg = res[1];
+        });
 
       if (this.temperature < this.tmax && this.temperature > this.tmin) {
         this.tColor = 'green';
@@ -83,6 +94,14 @@ export default {
       } else {
         this.pColor = 'red';
       }
+
+      if (this.pColor == this.tColor == 'green') {
+        this.status = 'Ok';
+      } else if(this.pColor == 'red' || this.tColor == 'red') {
+        this.status = 'Precaución';
+      } else if(this.pColor == 'red' && this.tColor == 'red') {
+        this.status = 'Crítico';
+      }
   }
 }
 </script>
@@ -90,18 +109,18 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   h3{
-      margin: 2em;
+      margin-top: 2em;
+      margin-bottom: 1em;
       padding-top: 1em;
   }
 
   h5{
       margin: 1em;
-
   }
 
   .imgf{
     display: block;
-    width:70%;
+    width:9em;
     max-height: 9em;
     margin: auto;
   }
@@ -116,6 +135,10 @@ export default {
     border-radius: 50%;
     margin: auto;
     background-color: black;
+  }
+
+  .col {
+    margin-top: 3em;
   }
 
   </style>

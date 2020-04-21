@@ -70,6 +70,20 @@ def week():
     cur.close()
     return jsonify(sel)
 
+@app.route('/api/data/year', methods=['GET'])
+def year():
+    cur = mysql.connection.cursor()
+    cur.execute('''\
+        SELECT AVG(ph)as pH, AVG(temperature) as Temperature, day, month, year, times\
+        FROM IOT_TEST.data\
+        GROUP BY year\
+        ORDER BY year\
+        LIMIT 1;''')
+    sel = cur.fetchall()
+    #sel = '{"data": 100}'
+    cur.close()
+    return jsonify(sel)
+
 @app.route('/', methods=['GET'])
 def stvue():
     return app.send_static_file('index.html')

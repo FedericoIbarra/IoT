@@ -13,6 +13,12 @@ GROUP BY day, month, year
 ORDER BY times
 LIMIT 5;
 
+SELECT AVG(ph )as pH, AVG(temperature) as Temperature, day, month, year, times
+FROM IOT_TEST.data
+GROUP BY year
+ORDER BY year
+LIMIT 1;
+
 SELECT ph, temperature, times
 FROM IOT_TEST.data
 ORDER BY times
