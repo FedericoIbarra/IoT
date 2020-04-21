@@ -37,6 +37,28 @@ export default {
       return {
         info: null,
         allData: [
+          [ "Mock 1", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 10", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 11", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 12", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 13", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 14", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 15", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 16", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 17", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 18", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 19", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 2", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 20", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 3", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 4", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 5", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 6", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 7", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 8", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 9", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
+        ],
+        weekData: [
           ["Mock 17", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
           ["Mock 5", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
           ["Mock 1", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
@@ -46,7 +68,7 @@ export default {
         items: [],
         temp: {
           //Data to be represented on x-axis
-          labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+          labels: [],
           datasets: [
             {
               label: 'Temperatura',
@@ -55,13 +77,13 @@ export default {
               borderWidth: 1,
               pointBorderColor: '#249EBF',
               //Data to be represented on y-axis
-              data: [20, 21, 17, 21, 24, 22, 22]
+              data: []
             }
           ]
         },
         ph: {
           //Data to be represented on x-axis
-          labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+          labels: [],
           datasets: [
             {
               label: 'pH',
@@ -70,7 +92,7 @@ export default {
               borderWidth: 1,
               pointBorderColor: '#249EBF',
               //Data to be represented on y-axis
-              data: [7, 7.2, 7.1, 6.9, 7, 7.2, 6.8]
+              data: []
             }
           ]
         },
@@ -98,12 +120,12 @@ export default {
         }
       }
   },
-  mounted () {
+  created () {
+
+    //Table setup
     axios
       .get(URL + '/api/data/all')
-      .then(response => (this.allData = response))
-
-    console.log("All data: " + this.allData);
+      .then(response => (this.allData = response));
 
     const row = {
       Dispositivo: 'Mock 1', Fecha: '01/01/2020', Temperatura: '20', ph: 7.0
@@ -116,10 +138,23 @@ export default {
         newRow.Fecha = e[3] + '/' + e[4] + '/' +e[5];
         newRow.Temperatura = e[2];
         newRow.ph = e[1];
-
-        console.log(newRow);
         this.items.push(newRow);
     });
+
+    //Charts setup
+    axios
+      .get(URL + '/api/data/week')
+      .then(response => (this.weekData = response));
+
+    this.weekData.forEach(e => {
+      this.temp.labels.push(e[3] + '/' + e[4]);
+      this.temp.datasets[0].data.push(e[2]);
+
+      this.ph.labels.push(e[3] + '/' + e[4]);
+      this.ph.datasets[0].data.push(e[1]);
+    });
+
+
   }
 }
 </script>
@@ -138,13 +173,14 @@ h3{
 
 .chart{
   display: block;
-  margin: auto;
+  margin: 2em auto 3em auto;
   width: 70%;
 }
 
 .tab {
   display: block;
   margin: auto;
+  padding-bottom: 1em;
   width: 100%;
 }
 
