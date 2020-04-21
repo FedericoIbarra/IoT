@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
     <h3>Datos de la última semana</h3>
-
     <b-container fluid>
       <b-row>
         <b-col class="cont" lg="6">
@@ -12,8 +11,6 @@
             <Chart class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.temp"></Chart>
             <Chart class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.ph"></Chart>
           </b-row>
-
-
         </b-col>
       </b-row>
     </b-container>
@@ -59,11 +56,11 @@ export default {
           [ "Mock 9", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
         ],
         weekData: [
-          ["Mock 17", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 5", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
           ["Mock 1", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 5", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
           ["Mock 10", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 13", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
+          ["Mock 13", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 17", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
         ],
         items: [],
         temp: {

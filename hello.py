@@ -36,7 +36,7 @@ def data():
 @app.route('/api/data/all', methods=['GET'])
 def api():
     cur = mysql.connection.cursor()
-    cur.execute('''SELECT * FROM IOT_TEST.data''')
+    cur.execute('''SELECT * FROM IOT_TEST.data ORDER BY times''')
     sel = cur.fetchall()
     #sel = '{"data": 100}'
     cur.close()
