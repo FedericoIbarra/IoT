@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
     <h3>Datos de la última semana</h3>
-	<p>{{ weekData }}</p>
     <b-container fluid>
       <b-row>
         <b-col class="cont" lg="6">

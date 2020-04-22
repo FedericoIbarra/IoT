@@ -16,7 +16,7 @@
 
       <b-row >
         <b-col class="cont secrow" lg="6">
-          <h4 class="h42">Ventajas de la hodroponia</h4>
+          <h4 class="h42">Ventajas de la hidroponia</h4>
           <ul id="example-1">
             <li v-for="perk in perks" v-bind:key="perk">
               <div style="float: left;">
