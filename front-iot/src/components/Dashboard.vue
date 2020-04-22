@@ -93,7 +93,7 @@ export default {
         } else if(this.pColor == 'red' && this.tColor == 'red') {
           this.status = 'Crítico';
         } else {
-          this.status = 'Precauciòn';
+          this.status = 'Precaución';
         }
       });
 
