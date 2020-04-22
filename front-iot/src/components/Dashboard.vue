@@ -74,6 +74,27 @@ export default {
       .then(res => {
         this.ph = res.data[0][0];
         this.temperature = res.data[0][1];
+
+        if (this.temperature < this.tmax && this.temperature > this.tmin) {
+          this.tColor = 'green';
+        } else {
+          this.tColor = 'red';
+        }
+
+        if (this.ph < this.pmax && this.ph > this.pmin) {
+          this.pColor = 'green';
+        } else {
+          this.pColor = 'red';
+        }
+
+
+        if (this.pColor == this.tColor == 'green') {
+          this.status = 'Ok';
+        } else if(this.pColor == 'red' && this.tColor == 'red') {
+          this.status = 'Crítico';
+        } else {
+          this.status = 'Precauciòn';
+        }
       });
 
       axios
@@ -82,32 +103,6 @@ export default {
           this.pavg = res.data[0][0];
           this.tavg = res.data[0][1];
         });
-
-      if (this.temperature < this.tmax && this.temperature > this.tmin) {
-        this.tColor = 'green';
-      } else {
-        this.tColor = 'red';
-      }
-
-      if (this.ph < this.pmax && this.ph > this.pmin) {
-        this.pColor = 'green';
-      } else {
-        this.pColor = 'red';
-      }
-
-      if (this.ph < this.pmax && this.ph > this.pmin) {
-        this.pColor = 'green';
-      } else {
-        this.pColor = 'red';
-      }
-
-      if (this.pColor == this.tColor == 'green') {
-        this.status = 'Ok';
-      } else if(this.pColor == 'red' || this.tColor == 'red') {
-        this.status = 'Precaución';
-      } else if(this.pColor == 'red' && this.tColor == 'red') {
-        this.status = 'Crítico';
-      }
   }
 }
 </script>
