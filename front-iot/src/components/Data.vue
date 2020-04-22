@@ -120,23 +120,26 @@ export default {
   created () {
 
     //Table setup
-    axios
-      .get(URL + '/api/data/all')
-      .then(response => (this.allData = response.data));
-
     const row = {
       Dispositivo: 'Mock 1', Fecha: '01/01/2020', Temperatura: '20', ph: 7.0
     }
+    axios
+      .get(URL + '/api/data/all')
+      .then(response => {
+        this.allData = response.data
+        this.items = [];
 
-    this.allData.forEach(e => {
-        let newRow = Object.create(row);
+        this.allData.forEach(e => {
+            let newRow = Object.create(row);
 
-        newRow.Dispositivo = e[0];
-        newRow.Fecha = e[3] + '/' + e[4] + '/' +e[5];
-        newRow.Temperatura = e[2];
-        newRow.ph = e[1];
-        this.items.push(newRow);
-    });
+            newRow.Dispositivo = e[0];
+            newRow.Fecha = e[3] + '/' + e[4] + '/' +e[5];
+            newRow.Temperatura = e[2];
+            newRow.ph = e[1];
+            this.items.push(newRow);
+        });
+
+      });
 
     //Charts setup
     axios
