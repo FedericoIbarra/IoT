@@ -72,7 +72,7 @@ export default {
     axios
       .get(URL + '/api/data/current')
       .then(res => {
-	      this.ph = res.data[0][0];
+        this.ph = res.data[0][0];
         this.temperature = res.data[0][1];
       });
 
