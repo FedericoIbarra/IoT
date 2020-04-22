@@ -56,12 +56,12 @@ export default {
         hw: "Mock 1",
         plant: "Lechuga romana",
         status: "Ok",
-        temperature: 25,
+        temperature: '',
         tmax: 27,
         tmin: 23,
         tavg: 25,
         tColor: 'red',
-        ph: 7.9,
+        ph: '0',
         pmax: 7.5,
         pmin: 6.6,
         pavg: 7.0,
@@ -72,15 +72,15 @@ export default {
     axios
       .get(URL + '/api/data/current')
       .then(res => {
-        this.ph = res[0];
-        this.temperature = res[1];
+	this.ph = res.data[0][0];
+        this.temperature = res.data[0][1];
       });
 
       axios
         .get(URL + '/api/data/year')
         .then(res => {
-          this.pavg = res[0];
-          this.tavg = res[1];
+          this.pavg = res.data[0][0];
+          this.tavg = res.data[0][1];
         });
 
       if (this.temperature < this.tmax && this.temperature > this.tmin) {
