@@ -122,7 +122,7 @@ export default {
     //Table setup
     axios
       .get(URL + '/api/data/all')
-      .then(response => (this.allData = response));
+      .then(response => (this.allData = response.data));
 
     const row = {
       Dispositivo: 'Mock 1', Fecha: '01/01/2020', Temperatura: '20', ph: 7.0
@@ -141,7 +141,7 @@ export default {
     //Charts setup
     axios
       .get(URL + '/api/data/week')
-      .then(response => (this.weekData = response));
+      .then(response => (this.weekData = response.data));
 
     this.weekData.forEach(e => {
       this.temp.labels.push(e[3] + '/' + e[4]);

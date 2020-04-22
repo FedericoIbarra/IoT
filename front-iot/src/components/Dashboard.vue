@@ -95,6 +95,12 @@ export default {
         this.pColor = 'red';
       }
 
+      if (this.ph < this.pmax && this.ph > this.pmin) {
+        this.pColor = 'green';
+      } else {
+        this.pColor = 'red';
+      }
+
       if (this.pColor == this.tColor == 'green') {
         this.status = 'Ok';
       } else if(this.pColor == 'red' || this.tColor == 'red') {
