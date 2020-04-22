@@ -7,8 +7,8 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item><router-link to="/data">Datos</router-link></b-nav-item>
-          <b-nav-item><router-link to="/dashboard">Dashboard</router-link></b-nav-item>
+          <b-nav-item><router-link v-if="login" to="/data">Datos</router-link></b-nav-item>
+          <b-nav-item><router-link v-if="login" to="/dashboard">Dashboard</router-link></b-nav-item>
           <b-nav-item><router-link to="/about">Quienes Somos</router-link></b-nav-item>
 
         </b-navbar-nav>
@@ -89,6 +89,8 @@ export default {
 
         if (this.res == this.form.username)
           this.login = true;
+
+        this.login = true;
 
       }
     }
