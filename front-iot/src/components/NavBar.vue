@@ -85,11 +85,12 @@ export default {
         let body = this.form.user + ',' + this.form.password;
         axios
           .post(URL+'/api/login', body)
-          .then(response => (this.res = response.data));
+          .then(response => {
+            this.res = response.data
 
-        if (this.res == this.form.username)
-          this.login = true;
-
+            if (this.res == this.form.username)
+              this.login = true;
+          });
       }
     }
 }
