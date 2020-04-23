@@ -2,7 +2,7 @@ from flask import Flask
 from flask import request
 from flask_mysqldb import MySQL
 from flask import jsonify
-from datetime import date
+from datetime import datetime
 
 import constants as CONSTANTS
 
@@ -20,13 +20,28 @@ mysql = MySQL(app)
 @app.route('/api/data', methods=['POST', 'GET'])
 def data():
     cur = mysql.connection.cursor()
+    date = datetime.now()
 
     if request.method == 'POST':
         data = request.stream.read()
+
+        #Data cleaning here
+        hw = "Mock n11"
+        ph = 7.0
+        temp = 22
+
         if(data):
             print(data)
-            cur.execute('INSERT INTO IOT_TEST.DUMMY (data) \
-                VALUES ("'+str(data)+'")')
+            cur.execute('INSERT INTO IOT_TEST.data \
+            (idHw, ph, temperature, day, month, year, times) \
+            VALUES ("'+hw+'", \
+            '+str(ph)+', \
+            '+str(temp)+', \
+            '+str(date.day)+', \
+            '+str(date.month)+', \
+            '+str(date.year)+', \
+            "'+str(date)+'")')
+
             mysql.connection.commit()
 
     cur.close()
