@@ -17,10 +17,14 @@ app.config['MYSQL_DB'] = CONSTANTS.DB_NAME
 
 mysql = MySQL(app)
 
+#FRONT END Static files srver
+@app.route('/', methods=['GET'])
+def stvue():
+    return app.send_static_file('index.html')
 
-
-
-
+'''
+Hardware and Software connection
+'''
 @app.route('/api/data', methods=['POST', 'GET'])
 def data():
     cur = mysql.connection.cursor()
@@ -30,25 +34,22 @@ def data():
         data = str(request.get_data())
 
         if(data):
-            data = data[2:len(data)-3] 
+            data = data[2:len(data)-3]
             data = data.split(',')
             print(data)
 
-            hw = data[0] + str(CONSTANTS.count)
-
-            #TO REMOVE
-            CONSTANTS.count = CONSTANTS.count + 1
-            ###################
-
-            ph = data[1].split(':')[1] 
+            hw = data[0]
+            ph = data[1].split(':')[1]
             temp = data[2].split(':')[1]
-            print(str(ph) + " - " + str(temp))
+            hum = data[3].split(':')[1]
+            print(str(ph)  + " - " + str(temp) + " - " + str(hum))
 
-            cur.execute('INSERT INTO IOT_TEST.data \
-                (idHw, ph, temperature, day, month, year, times) \
-                VALUES ("'+hw+'", \
+            cur.execute('INSERT INTO IOT_TEST.DATA \
+                (idNode, ph, temperature, humidity, day, month, year, times) \
+                VALUES ("'+str(hw)+'", \
                 '+str(ph)+', \
                 '+str(temp)+', \
+                '+str(hum)+', \
                 '+str(date.day)+', \
                 '+str(date.month)+', \
                 '+str(date.year)+', \
@@ -59,61 +60,108 @@ def data():
     cur.close()
     return '100'
 
-
-@app.route('/api/data/all', methods=['GET'])
+'''
+Fetch all data
+'''
+@app.route('/api/data/all', methods=['POST'])
 def api():
+    data = str(request.get_data())
+    data = data[2:len(data)-1]
+    data = data.split(',')
+    print("\n\nData: " + str(data))
+
     cur = mysql.connection.cursor()
-    cur.execute('''SELECT * FROM IOT_TEST.data ORDER BY times''')
+    cur.execute(' \
+        SELECT n.nodeName, n.plant, d.ph, d.temperature, d.humidity, d.day, d.month, d.year, d.times \
+        FROM IOT_TEST.DATA d \
+        JOIN IOT_TEST.NODES n ON d.idNode = n.idNode \
+        JOIN IOT_TEST.USERS u ON u.idPK = n.idUser \
+        WHERE u.username = "'+str(data[0])+'" \
+        ORDER BY d.times; \
+    ')
+
     sel = cur.fetchall()
-    #sel = '{"data": 100}'
     cur.close()
     return jsonify(sel)
 
-@app.route('/api/data/current', methods=['GET'])
+'''
+Get current node data based
+'''
+@app.route('/api/data/current', methods=['POST'])
 def current():
+    data = str(request.get_data())
+    data = data[2:len(data)-1]
+    data = data.split(',')
+    print("\n\nData: " + str(data))
+
     cur = mysql.connection.cursor()
-    cur.execute('''\
-        SELECT ph, temperature, times\
-        FROM IOT_TEST.data\
-        ORDER BY times DESC\
-        LIMIT 1;''')
+    cur.execute('\
+        SELECT n.nodeName, n.plant, d.ph, d.temperature, d.humidity, d.day, d.month, d.year, d.times \
+        FROM IOT_TEST.DATA d \
+        JOIN IOT_TEST.NODES n ON d.idNode = n.idNode \
+        JOIN IOT_TEST.USERS u ON u.idPK = n.idUser \
+        WHERE u.username = "'+str(data[0])+'" and n.nodeName = "'+str(data[1])+'" \
+        ORDER BY d.times DESC \
+        LIMIT 1; \
+        ')
 
     sel = cur.fetchall()
-    #sel = '{"data": 100}'
     cur.close()
+    print(sel)
     return jsonify(sel)
 
-@app.route('/api/data/week', methods=['GET'])
+
+'''
+Weekly average per day
+'''
+@app.route('/api/data/week', methods=['POST'])
 def week():
+    data = str(request.get_data())
+    data = data[2:len(data)-1]
+    data = data.split(',')
+
     cur = mysql.connection.cursor()
-    cur.execute('''\
-        SELECT idHw, AVG(ph )as pH, AVG(temperature) as Temperature, day, month, year, times\
-        FROM IOT_TEST.data\
-        GROUP BY day, month, year\
-        ORDER BY times\
-        LIMIT 5;''')
+    cur.execute(' \
+        SELECT n.nodeName, n.plant, avg(d.ph) as ph, avg(d.temperature) as temp, \
+                        avg(d.humidity) as hum, d.day, d.month, d.year, d.times \
+        FROM IOT_TEST.DATA d \
+        JOIN IOT_TEST.NODES n ON d.idNode = n.idNode \
+        JOIN IOT_TEST.USERS u ON u.idPK = n.idUser \
+        WHERE u.username = "'+str(data[0])+'" and n.nodeName = "'+str(data[1])+'" \
+        GROUP BY d.day, d.month, d.year \
+        ORDER BY d.times DESC \
+        LIMIT 7; \
+        ')
     sel = cur.fetchall()
-    #sel = '{"data": 100}'
     cur.close()
+    print(sel)
     return jsonify(sel)
 
-@app.route('/api/data/year', methods=['GET'])
+'''
+Yearly average
+'''
+@app.route('/api/data/year', methods=['POST'])
 def year():
+    data = str(request.get_data())
+    data = data[2:len(data)-1]
+    data = data.split(',')
+
     cur = mysql.connection.cursor()
-    cur.execute('''\
-        SELECT AVG(ph)as pH, AVG(temperature) as Temperature, day, month, year, times\
-        FROM IOT_TEST.data\
-        GROUP BY year\
-        ORDER BY year\
-        LIMIT 1;''')
+    cur.execute(' \
+        SELECT n.nodeName, n.plant, avg(d.ph) as ph, avg(d.temperature) \
+        as temp, avg(d.humidity) as hum, d.year, d.times \
+        FROM IOT_TEST.DATA d \
+        JOIN IOT_TEST.NODES n ON d.idNode = n.idNode \
+        JOIN IOT_TEST.USERS u ON u.idPK = n.idUser \
+        WHERE u.username = "'+str(data[0])+'" and n.nodeName = "'+str(data[1])+'" \
+        GROUP BY d.year \
+        ORDER BY d.times DESC \
+        LIMIT 1; \
+        ')
     sel = cur.fetchall()
-    #sel = '{"data": 100}'
+    print(sel)
     cur.close()
     return jsonify(sel)
-
-@app.route('/', methods=['GET'])
-def stvue():
-    return app.send_static_file('index.html')
 
 #Login
 @app.route('/api/login', methods=['POST'])
@@ -152,13 +200,14 @@ def logup():
     content = data.split(',')
 
     cur = mysql.connection.cursor()
-    cur.execute('INSERT INTO IOT_TEST.USERS (username, pass, email, plant) \
-    VALUES (\
-     	"'+str(content[0])+'",\
-    	"'+str(content[1])+'",\
-    	"'+str(content[2])+'",\
-    	"'+str(content[3])+'"\
-    );')
+    cur.execute(' \
+        INSERT INTO IOT_TEST.USERS (username, pass, email) \
+        VALUES (\
+         	"'+str(content[0])+'",\
+        	"'+str(content[1])+'",\
+        	"'+str(content[2])+'"\
+        ); \
+    ')
 
     mysql.connection.commit()
     cur.close()
