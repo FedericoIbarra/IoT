@@ -88,7 +88,7 @@ export default {
           .then(response => {
             this.res = response.data
 
-            if (this.res == this.form.username)
+            if (this.res == this.form.user)
               this.login = true;
           });
       }

@@ -5,8 +5,9 @@
 // Parametros y variables para conexion a WIFI y server
 const char* ssid = "Infinitum2019";
 const char* password = "PalomaPerra2019";
-const char* host = "18.233.170.209";
+const char* host = "54.161.195.215";
 const uint16_t port = 5000;
+const char* uri = "/api/data";
 // Variables de sensores
 //PH
 #define SensorPin A0          //pH meter Analog output to Arduino Analog Input 0
@@ -63,7 +64,7 @@ void loop()
    String myString;
    String myString1;
    String myString2;
-   if (http.begin(client, host, port)) //Iniciar conexión
+   if (http.begin(client, host, port, uri)) //Iniciar conexión
    {
       Serial.print("[HTTP] GET...\n");
       int httpCode = http.GET();  // Realizar petición
@@ -74,6 +75,7 @@ void loop()
          if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
             String payload = http.getString();   // Obtener respuesta
             Serial.println(payload);   // Mostrar respuesta por serial
+            pos = payload.toInt();
          }
       }
       else {
@@ -81,7 +83,7 @@ void loop()
       }
 
       //Actuador
-      pos = payload.toInt();
+      Serial.println(pos);
       myservo.write(pos); 
       //////////
       //Ph sensor
@@ -134,7 +136,7 @@ void loop()
       }
       ////////////////
       ///////////////
-      int httpSensor = http.POST("Ph:" + myString + "," +"Temperatura:" + myString1 + "," +"Humedad:" + myString2 +","+"Luminosidad:" + myString3 +",");
+      int httpSensor = http.POST("NODE MCU 1,Ph:" + myString + "," +"Temperatura:" + myString1 + "," +"Humedad:" + myString2 +",");
       String payload2 = http.getString();
       Serial.println(httpSensor);
       Serial.println(payload2);

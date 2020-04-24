@@ -17,30 +17,42 @@ app.config['MYSQL_DB'] = CONSTANTS.DB_NAME
 
 mysql = MySQL(app)
 
+
+
+
+
 @app.route('/api/data', methods=['POST', 'GET'])
 def data():
     cur = mysql.connection.cursor()
     date = datetime.now()
 
     if request.method == 'POST':
-        data = request.stream.read()
-
-        #Data cleaning here
-        hw = "Mock n11"
-        ph = 7.0
-        temp = 22
+        data = str(request.get_data())
 
         if(data):
+            data = data[2:len(data)-3]
+            data = data.split(',')
             print(data)
+
+            hw = data[0] + str(CONSTANTS.count)
+
+            #TO REMOVE
+            CONSTANTS.count = CONSTANTS.count + 1
+            ###################
+
+            ph = data[1].split(':')[1]
+            temp = data[2].split(':')[1]
+            print(str(ph) + " - " + str(temp))
+
             cur.execute('INSERT INTO IOT_TEST.data \
-            (idHw, ph, temperature, day, month, year, times) \
-            VALUES ("'+hw+'", \
-            '+str(ph)+', \
-            '+str(temp)+', \
-            '+str(date.day)+', \
-            '+str(date.month)+', \
-            '+str(date.year)+', \
-            "'+str(date)+'")')
+                (idHw, ph, temperature, day, month, year, times) \
+                VALUES ("'+hw+'", \
+                '+str(ph)+', \
+                '+str(temp)+', \
+                '+str(date.day)+', \
+                '+str(date.month)+', \
+                '+str(date.year)+', \
+                "'+str(date)+'")')
 
             mysql.connection.commit()
 
@@ -63,7 +75,7 @@ def current():
     cur.execute('''\
         SELECT ph, temperature, times\
         FROM IOT_TEST.data\
-        ORDER BY times\
+        ORDER BY times DESC\
         LIMIT 1;''')
 
     sel = cur.fetchall()

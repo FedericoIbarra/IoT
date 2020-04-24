@@ -8,8 +8,8 @@
         </b-col>
         <b-col lg="6">
           <b-row>
-            <Chart class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.temp"></Chart>
-            <Chart class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.ph"></Chart>
+            <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.temp"></Chart>
+            <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.ph"></Chart>
           </b-row>
         </b-col>
       </b-row>
@@ -33,6 +33,7 @@ export default {
   data () {
       return {
         info: null,
+	fetched: false,
         allData: [
           [ "Mock 1", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
           [ "Mock 10", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
@@ -56,11 +57,11 @@ export default {
           [ "Mock 9", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
         ],
         weekData: [
-          ["Mock 1", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 5", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 10", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 13", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 17", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
+          ["Mock 0", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 0", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 0", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 0", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 0", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
         ],
         items: [],
         temp: {
@@ -154,6 +155,8 @@ export default {
           this.ph.labels.push(e[3] + '/' + e[4]);
           this.ph.datasets[0].data.push(e[1]);
         });
+
+	this.fetched = true;
       });
 
 
