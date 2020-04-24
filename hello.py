@@ -30,7 +30,7 @@ def data():
         data = str(request.get_data())
 
         if(data):
-            data = data[2:len(data)-3]
+            data = data[2:len(data)-3] 
             data = data.split(',')
             print(data)
 
@@ -40,7 +40,7 @@ def data():
             CONSTANTS.count = CONSTANTS.count + 1
             ###################
 
-            ph = data[1].split(':')[1]
+            ph = data[1].split(':')[1] 
             temp = data[2].split(':')[1]
             print(str(ph) + " - " + str(temp))
 
