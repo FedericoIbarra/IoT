@@ -53,6 +53,8 @@ export default {
   },
   data () {
       return {
+        user: "usr1",
+        node: "Mock 1",
         hw: "Mock 1",
         plant: "Lechuga romana",
         status: "Ok",
@@ -69,8 +71,10 @@ export default {
       }
   },
   mounted () {
+    let body = this.user + ',' + this.node;
+
     axios
-      .get(URL + '/api/data/current')
+      .post(URL + '/api/data/current', body)
       .then(res => {
         this.ph = res.data[0][0];
         this.temperature = res.data[0][1];
@@ -97,12 +101,14 @@ export default {
         }
       });
 
+
       axios
-        .get(URL + '/api/data/year')
+        .post(URL + '/api/data/year', body)
         .then(res => {
           this.pavg = res.data[0][0];
           this.tavg = res.data[0][1];
         });
+
   }
 }
 </script>

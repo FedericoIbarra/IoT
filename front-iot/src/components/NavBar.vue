@@ -13,6 +13,18 @@
 
         </b-navbar-nav>
 
+        <b-navbar-nav class="ml-auto" v-if="login">
+            <b-nav-item>
+              <p class="reg" v-b-modal.modalproj>Nuevo proyecto</p>
+            </b-nav-item>
+
+            <b-nav-item>
+              <p class="ini" v-on:click="logOut">Cerrar Sesión</p>
+            </b-nav-item>
+
+            <NewProject></NewProject>
+        </b-navbar-nav>
+
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto" v-if="!login">
             <b-nav-item>
@@ -59,13 +71,15 @@
 <script>
 
 import Logup from './Logup.vue'
+import NewProject from './NewProject.vue'
 import axios from 'axios'
 import URL from '../constants.js'
 
 export default {
   name: 'NavBar',
   components: {
-    Logup
+    Logup,
+    NewProject
   },
   data() {
       return {
@@ -75,12 +89,28 @@ export default {
         },
         show: true,
         res: '',
-        login: false
+        login: true
       }
     },
+    mounted () {
+      //Local debug
+      sessionStorage.setItem('usr', 'usr1');
+      sessionStorage.setItem('usrNodes', ['Mock 1', 'Mock 2']);
+      console.log(sessionStorage.getItem('usr'));
+      this.login = true;
+      //
+    },
+
     methods: {
+      logOut() {
+        console.log("LOGOUT");
+        sessionStorage.clear();
+        this.login = false;
+      },
+
       onSubmit(evt) {
         evt.preventDefault();
+
         //Post request
         let body = this.form.user + ',' + this.form.password;
         axios
@@ -90,6 +120,7 @@ export default {
 
             if (this.res == this.form.user)
               this.login = true;
+              sessionStorage.setItem('usr', this.form.user);
           });
       }
     }

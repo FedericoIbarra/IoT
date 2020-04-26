@@ -15,6 +15,12 @@ CREATE TABLE IOT_TEST.USERS (
     nodeName VARCHAR(15) NOT NULL UNIQUE,
     plant VARCHAR(50)  NOT NULL,
     idUser INTEGER NOT NULL,
+		tempMax FLOAT,
+		tempMin FLOAT,
+		phMax FLOAT,
+		phMin FLOAT,
+		humMax FLOAT,
+		humMin FLOAT,
     FOREIGN KEY (idUser) REFERENCES USERS(idPK)
  );
 

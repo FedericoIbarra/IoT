@@ -1,67 +1,60 @@
 <template>
   <div class="hello">
-    <h3>Datos de la última semana</h3>
-    <b-container fluid>
-      <b-row>
-        <b-col class="cont" lg="6">
-          <b-table class="tab" responsive striped hover :items="items"></b-table>
-        </b-col>
-        <b-col lg="6">
-          <b-row>
-            <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.temp"></Chart>
-            <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.ph"></Chart>
-          </b-row>
-        </b-col>
-      </b-row>
-    </b-container>
+    <h3>Estas son todas las lecturas de tus nodos</h3>
+    <b-table class="tab" responsive striped hover :items="items"></b-table>
+
+    <ChartLoader></ChartLoader>
+    <a href="#">Descargar datos</a>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import Chart from './Chart.vue'
+import ChartLoader from './ChartLoader.vue'
 import URL from '../constants.js'
 
 export default {
   name: 'Data',
   components: {
-    Chart
+    ChartLoader
   },
   props: {
     msg: String
   },
   data () {
       return {
+        user: "usr1",
+        node: "Mock 1",
         info: null,
-	fetched: false,
+        fetched: false,
         allData: [
-          [ "Mock 1", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 10", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 11", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 12", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 13", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 14", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 15", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 16", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 17", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 18", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 19", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 2", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 20", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 3", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 4", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 5", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 6", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 7", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 8", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          [ "Mock 9", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
+          [ "Mock 1", "Choya", 7, 22, 70, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 10", "Choya", 7, 22, 70, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 11", "Choya", 7, 22, 70, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 12", "Choya", 7, 22, 70, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 13", "Choya", 7, 22, 70, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 14", "Choya", 7, 22, 70, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 15", "Choya", 7, 22, 70, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 16", "Choya", 7, 22, 70, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 17", "Choya", 7, 22, 70, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 18", "Choya", 7, 22, 70, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 19", "Choya", 7, 22, 70, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 2", "Choya", 7, 22, 70, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 20", "Choya", 7, 22, 70, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 3", "Choya", 7, 22, 70, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 4", "Choya", 7, 22, 70, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 5", "Choya", 7, 22, 70, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 6", "Choya", 7, 22, 70, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 7", "Choya", 7, 22, 70, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 8", "Choya", 7, 22, 70, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          [ "Mock 9", "Choya", 7, 22, 70, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
         ],
         weekData: [
-          ["Mock 0", 7, 22, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 0", 7, 22, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 0", 7, 22, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 0", 7, 22, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
-          ["Mock 0", 7, 22, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
+          ["Mock 0", "Choya", 7, 22, 70, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 0", "Choya", 7, 22, 70, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 0", "Choya", 7, 22, 70, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 0", "Choya", 7, 22, 70, 21, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
+          ["Mock 0", "Choya", 7, 22, 70, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
         ],
         items: [],
         temp: {
@@ -119,13 +112,22 @@ export default {
       }
   },
   created () {
+    this.user = sessionStorage.getItem('usr');
+    this.node = sessionStorage.getItem('usrNodes');
 
+    let body = this.user + ',' + this.node;
     //Table setup
     const row = {
-      Dispositivo: 'Mock 1', Fecha: '01/01/2020', Temperatura: '20', ph: 7.0
+      Dispositivo: 'Mock 1',
+      Planta: 'Choya',
+      Fecha: '01/01/2020',
+      Temperatura: '20',
+      ph: 7.0,
+      Humedad: 70
     }
+    /*
     axios
-      .get(URL + '/api/data/all')
+      .post(URL + '/api/data/all', body)
       .then(response => {
         this.allData = response.data
         this.items = [];
@@ -141,27 +143,36 @@ export default {
         });
 
       });
+      */
 
-    //Charts setup
-    axios
-      .get(URL + '/api/data/week')
-      .then(response => {
-        this.weekData = response.data;
+      axios
+        .post(URL + '/api/data/all', body)
+        .then(response => {
+          this.allData = response.data
+          this.items = [];
 
-        this.weekData.forEach(e => {
-          this.temp.labels.push(e[3] + '/' + e[4]);
-          this.temp.datasets[0].data.push(e[2]);
+          this.allData.forEach(e => {
+              let newRow = Object.create(row);
 
-          this.ph.labels.push(e[3] + '/' + e[4]);
-          this.ph.datasets[0].data.push(e[1]);
-        });
+              newRow.Dispositivo = e[0];
+              newRow.Fecha = e[3] + '/' + e[4] + '/' +e[5];
+              newRow.Temperatura = e[2];
+              newRow.ph = e[1];
+              this.items.push(newRow);
+          });
 
-	this.fetched = true;
       });
 
-
-
-
+      this.allData.forEach(e => {
+          let newRow = Object.create(row);
+          newRow.Dispositivo = e[0];
+          newRow.planta = e[1];
+          newRow.Fecha = e[5] + '/' + e[6] + '/' +e[7];
+          newRow.Temperatura = e[2] + 'ºC';
+          newRow.ph = e[3];
+          newRow.humedad = e[4] + '%';
+          this.items.push(newRow);
+      });
   }
 }
 </script>
@@ -170,25 +181,31 @@ export default {
 <style scoped>
 
 h3{
-    margin: 2em;
+    margin: 1em;
     padding-top: 1em;
 }
 
-.hello{
-    min-height: 19em;
+a {
+  background-color: #02B392;
+  color: #262626;
+  font-weight: bold;
+  padding: 0.7em;
+  border-radius: 7px;
 }
 
-.chart{
-  display: block;
-  margin: 2em auto 3em auto;
-  width: 70%;
+a:hover{
+  text-decoration: none;
 }
 
 .tab {
   display: block;
   margin: auto;
-  padding-bottom: 1em;
-  width: 100%;
+  padding: 1em;
+  width: 90%;
+}
+
+.hello{
+  padding-bottom: 3em;
 }
 
 </style>

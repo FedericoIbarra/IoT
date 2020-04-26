@@ -188,7 +188,42 @@ def login():
     print(result + "\n")
     return result
 
+#Create new project
+@app.route('/api/project', methods=['POST'])
+def newProject():
 
+    data = str(request.get_data())
+    data = data[2:len(data)-1]
+    content = data.split(',')
+    print("\n\nData: " + str(content))
+
+    cur = mysql.connection.cursor()
+    cur.execute(' \
+        SELECT idPK FROM IOT_TEST.USERS u\
+        WHERE u.username = "'+content[0]+'"; \
+    ')
+
+    usrId = cur.fetchone()
+
+    cur.execute(' \
+        INSERT INTO  IOT_TEST.NODES (nodeName, plant, idUser, tempMax, tempMin, phMax, phMin, humMax, humMin) \
+          VALUES ( \
+            "'+content[1]+'", \
+        	"'+content[2]+'", \
+            '+str(usrId[0])+', \
+            '+content[3]+', \
+        	'+content[4]+', \
+            '+content[5]+', \
+            '+content[6]+', \
+            '+content[7]+', \
+        	'+content[8]+' \
+        ); \
+    ')
+
+
+    mysql.connection.commit()
+    cur.close()
+    return "200"
 
 #LogUp
 @app.route('/api/logup', methods=['POST'])

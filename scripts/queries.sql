@@ -57,16 +57,30 @@ INSERT INTO IOT_TEST.USERS (username, pass, email) VALUES (
 );
 
 --New Nodes--
-INSERT INTO  IOT_TEST.NODES (nodeName, plant, idUser) VALUES (
+INSERT INTO  IOT_TEST.NODES (nodeName, plant, idUser, tempMax, tempMin, phMax, phMin, humMax, humMin)
+  VALUES (
     "Mock 1",
     "Choyas",
-    1
+    1,
+    27.0,
+    22.0,
+    7.0,
+    6.5,
+    68,
+    72
 );
 
-INSERT INTO  IOT_TEST.NODES (nodeName, plant, idUser) VALUES (
+INSERT INTO  IOT_TEST.NODES (nodeName, plant, idUser, tempMax, tempMin, phMax, phMin, humMax, humMin)
+  VALUES (
     "Mock 2",
     "Lechugas",
-    1
+    1,
+    27.0,
+    22.0,
+    7.0,
+    6.5,
+    68,
+    72
 );
 
 
