@@ -12,6 +12,7 @@ import Landing from './components/Landing.vue'
 import AboutUs from './components/AboutUs.vue'
 import Data from './components/Data.vue'
 import Dashboard from './components/Dashboard.vue'
+import Flex from './components/Flex.vue'
 
 Vue.use(VueRouter)
 Vue.config.productionTip = false
@@ -36,6 +37,10 @@ const router = new VueRouter({
     {
       path: '/dashboard',
       component: Dashboard
+    },
+    {
+      path: '/flex',
+      component: Flex
     }
 
   ]

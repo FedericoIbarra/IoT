@@ -17,8 +17,6 @@ export default {
       return {
         user: "usr1",
         node: "Mock 1",
-        info: null,
-        fetched: false,
         allData: [
           [ "Mock 1", "Choya", 7, 22, 70, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
           [ "Mock 10", "Choya", 7, 22, 70, 20, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
@@ -49,58 +47,7 @@ export default {
           ["Mock 0", "Choya", 7, 22, 70, 22, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"]
         ],
         items: [],
-        temp: {
-          //Data to be represented on x-axis
-          labels: [],
-          datasets: [
-            {
-              label: 'Temperatura',
-              backgroundColor: '#02B392',
-              pointBackgroundColor: '#016653',
-              borderWidth: 1,
-              pointBorderColor: '#249EBF',
-              //Data to be represented on y-axis
-              data: []
-            }
-          ]
-        },
-        ph: {
-          //Data to be represented on x-axis
-          labels: [],
-          datasets: [
-            {
-              label: 'pH',
-              backgroundColor: '#02B392',
-              pointBackgroundColor: '#016653',
-              borderWidth: 1,
-              pointBorderColor: '#249EBF',
-              //Data to be represented on y-axis
-              data: []
-            }
-          ]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: true
-              }
-            }],
-            xAxes: [ {
-              gridLines: {
-                display: false
-              }
-            }]
-          },
-          legend: {
-            display: true
-          },
-          responsive: true,
-          maintainAspectRatio: true
-        }
+
       }
   },
   created () {

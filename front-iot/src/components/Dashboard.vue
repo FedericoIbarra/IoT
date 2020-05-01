@@ -41,9 +41,9 @@ export default {
         res.data.forEach(e => this.nodes.push(e[0]));
       });
 
-    //For local debuggin only
+    /*For local debuggin only
     this.nodes = ['Mock 1', 'Mock 2', 'Mock 1', 'Mock 2', 'Mock 1', 'Mock 2']
-    //
+    */
   }
 }
 </script>

@@ -90,21 +90,20 @@ export default {
         },
         show: true,
         res: '',
-        login: true
+        login: false
       }
     },
     mounted () {
-      //Local debug
+      /*Local debug
       sessionStorage.setItem('usr', 'usr1');
       sessionStorage.setItem('usrNodes', ['Mock 1', 'Mock 2']);
       console.log(sessionStorage.getItem('usr'));
       this.login = true;
-      //
+      */
     },
 
     methods: {
       logOut() {
-        console.log("LOGOUT");
         sessionStorage.clear();
         this.login = false;
       },
@@ -119,9 +118,11 @@ export default {
           .then(response => {
             this.res = response.data
 
-            if (this.res == this.form.user)
+            if (this.res == this.form.user) {
               this.login = true;
               sessionStorage.setItem('usr', this.form.user);
+            }
+
           });
       }
     }

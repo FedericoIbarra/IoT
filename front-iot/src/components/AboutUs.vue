@@ -8,7 +8,7 @@
           <div class="cont">
             <img alt="Choya logo" class="imgf" src="../assets/Fede.jpg">
           </div>
-          <h3>Federico Ibarra</h3>
+          <h3><router-link to="/flex">Federico Ibarra</router-link></h3>
           <h5>Software Lead</h5>
         </b-col>
 
@@ -55,6 +55,16 @@ h3{
   padding: 2em 0 1em 0;
   color: #262626;
 }
+
+a{
+  padding: 2em 0 1em 0;
+  color: #262626;
+}
+
+a:hover{
+  text-decoration: none;
+}
+
 
 h5{
   padding: 0 0 6em 0;
