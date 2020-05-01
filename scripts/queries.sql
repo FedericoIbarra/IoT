@@ -43,6 +43,12 @@ GROUP BY d.year
 ORDER BY d.times DESC
 LIMIT 1;
 
+--All nodes by user--
+SELECT n.nodeName
+FROM IOT_TEST.NODES n
+JOIN IOT_TEST.USERS u ON u.idPK = n.idUser
+WHERE u.username = "usr1"
+
 
 
 -------------------------------------------------------------------------------

@@ -96,7 +96,10 @@ def current():
 
     cur = mysql.connection.cursor()
     cur.execute('\
-        SELECT n.nodeName, n.plant, d.ph, d.temperature, d.humidity, d.day, d.month, d.year, d.times \
+        SELECT d.ph, n.phMin, n.phMax, \
+               d.temperature, n.tempMin, n.tempMax, \
+               d.humidity, n.humMin, n.humMax, \
+               n.plant, d.day, d.month, d.year, d.times \
         FROM IOT_TEST.DATA d \
         JOIN IOT_TEST.NODES n ON d.idNode = n.idNode \
         JOIN IOT_TEST.USERS u ON u.idPK = n.idUser \
@@ -148,7 +151,7 @@ def year():
 
     cur = mysql.connection.cursor()
     cur.execute(' \
-        SELECT n.nodeName, n.plant, avg(d.ph) as ph, avg(d.temperature) \
+        SELECT avg(d.ph) as ph, avg(d.temperature) \
         as temp, avg(d.humidity) as hum, d.year, d.times \
         FROM IOT_TEST.DATA d \
         JOIN IOT_TEST.NODES n ON d.idNode = n.idNode \
@@ -161,6 +164,30 @@ def year():
     sel = cur.fetchall()
     print(sel)
     cur.close()
+    return jsonify(sel)
+
+'''
+Get all nodes by user
+'''
+@app.route('/api/nodes', methods=['POST'])
+def allNodes():
+    data = str(request.get_data())
+    data = data[2:len(data)-1]
+    data = data.split(',')
+    print("\n\nData: " + str(data))
+
+    cur = mysql.connection.cursor()
+    cur.execute(' \
+        SELECT n.nodeName \
+        FROM IOT_TEST.NODES n \
+        JOIN IOT_TEST.USERS u ON u.idPK = n.idUser \
+        WHERE u.username = "'+str(data[0])+'" \
+    ')
+
+
+    sel = cur.fetchall()
+    cur.close()
+    print(sel)
     return jsonify(sel)
 
 #Login

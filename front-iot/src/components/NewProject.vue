@@ -3,7 +3,6 @@
   <div>
 
     <b-modal id="modalproj" title="Crear nuevo proyecto" ref="modalproj" hide-footer=true>
-      <p>{{form.user}}</p>
       <b-form @submit="onSubmit" v-if="show">
 
         <b-form-group id="nodeName"

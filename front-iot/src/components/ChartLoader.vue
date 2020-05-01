@@ -1,7 +1,26 @@
 <template>
   <div class="hello">
-    <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.temp"></Chart>
-    <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.ph"></Chart>
+    <p>{{node}}</p>
+
+    <b-container fluid >
+      <b-row>
+
+        <b-col lg="4" class="col">
+          <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.temp"></Chart>
+        </b-col>
+
+        <b-col lg="4" class="col">
+          <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.ph"></Chart>
+        </b-col>
+
+        <b-col lg="4" class="col">
+          <Chart v-if="fetched" class="chart" v-bind:charoptions="this.option" v-bind:chardata="this.humidity"></Chart>
+        </b-col>
+
+      </b-row>
+    </b-container>
+
+
   </div>
 </template>
 
@@ -15,15 +34,12 @@ export default {
   components: {
     Chart
   },
-  props: {
-    msg: String
-  },
+  props: ['node'],
   data () {
       return {
         user: "usr1",
-        node: "Mock 1",
         info: null,
-        fetched: false,
+        fetched: true,
         weekData: [
           ["Mock 0", "Choya", 7, 22, 70, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
           ["Mock 0", "Choya", 7, 22, 70, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
@@ -52,6 +68,21 @@ export default {
           datasets: [
             {
               label: 'pH',
+              backgroundColor: '#02B392',
+              pointBackgroundColor: '#016653',
+              borderWidth: 1,
+              pointBorderColor: '#249EBF',
+              //Data to be represented on y-axis
+              data: []
+            }
+          ]
+        },
+        humidity: {
+          //Data to be represented on x-axis
+          labels: [],
+          datasets: [
+            {
+              label: 'humidity',
               backgroundColor: '#02B392',
               pointBackgroundColor: '#016653',
               borderWidth: 1,
@@ -101,8 +132,7 @@ export default {
           this.ph.labels.push(e[3] + '/' + e[4]);
           this.ph.datasets[0].data.push(e[1]);
         });
-
-	this.fetched = true;
+        this.fetched = true;
       });
 
 

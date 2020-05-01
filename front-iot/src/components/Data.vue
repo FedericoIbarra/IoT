@@ -2,25 +2,17 @@
   <div class="hello">
     <h3>Estas son todas las lecturas de tus nodos</h3>
     <b-table class="tab" responsive striped hover :items="items"></b-table>
-
-    <ChartLoader></ChartLoader>
+    <p></p>
     <a href="#">Descargar datos</a>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import ChartLoader from './ChartLoader.vue'
 import URL from '../constants.js'
 
 export default {
   name: 'Data',
-  components: {
-    ChartLoader
-  },
-  props: {
-    msg: String
-  },
   data () {
       return {
         user: "usr1",
