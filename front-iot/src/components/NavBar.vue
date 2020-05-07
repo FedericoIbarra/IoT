@@ -14,30 +14,29 @@
 
         </b-navbar-nav>
 
-        <b-navbar-nav class="ml-auto" v-if="login">
-            <b-nav-item>
-              <p class="reg" v-b-modal.modalproj>Nuevo proyecto</p>
-            </b-nav-item>
-
-            <b-nav-item>
-              <p class="ini" v-on:click="logOut">Cerrar Sesión</p>
-            </b-nav-item>
-
-            <NewProject></NewProject>
-        </b-navbar-nav>
-
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto" v-if="!login">
-            <b-nav-item>
-              <p class="reg" v-b-modal.modalreg>Registrarse</p>
-            </b-nav-item>
+        <b-navbar-nav class="ml-auto" >
 
-            <b-nav-item>
-              <p class="ini" v-b-modal.modal-ini>Iniciar Sesión</p>
-            </b-nav-item>
 
-            <b-modal id="modal-ini" title="Iniciar Sesión" hide-footer=true>
-              <b-form @submit="onSubmit" v-if="show">
+          <b-nav-item v-if="login">
+            <NewProject></NewProject>
+            <p class="reg" v-on:click="showNPModal">Nuevo proyecto</p>
+          </b-nav-item>
+
+          <b-nav-item v-else>
+            <p class="reg" v-b-modal.modalreg>Registrarse</p>
+            <Logup></Logup>
+          </b-nav-item>
+
+
+          <b-nav-item v-if="login">
+            <p class="ini" v-on:click="logOut">Cerrar Sesión</p>
+          </b-nav-item>
+
+          <b-nav-item v-else>
+            <p class="ini" v-b-modal.modal-ini hide-footer=true>Iniciar Sesión</p>
+            <b-modal id="modal-ini" title="Iniciar Sesión">
+              <b-form @submit="onSubmit">
                 <b-form-group id="input-group-1"
                               label="Usuario:"
                               label-for="input-1">
@@ -60,8 +59,7 @@
               </b-form>
 
             </b-modal>
-
-            <Logup></Logup>
+          </b-nav-item>
 
         </b-navbar-nav>
       </b-collapse>
@@ -88,7 +86,6 @@ export default {
           user: '',
           password: ''
         },
-        show: true,
         res: '',
         login: false
       }
@@ -103,14 +100,19 @@ export default {
     },
 
     methods: {
+      showNPModal() {
+        this.$bvModal.show("modalproj");
+      },
       logOut() {
         sessionStorage.clear();
         this.login = false;
+        this.unlog = true;
       },
 
       onSubmit(evt) {
         evt.preventDefault();
-
+        this.login = true;
+        this.unlog = false;
         //Post request
         let body = this.form.user + ',' + this.form.password;
         axios
@@ -122,6 +124,7 @@ export default {
               this.login = true;
               sessionStorage.setItem('usr', this.form.user);
             }
+
 
           });
       }
@@ -177,3 +180,4 @@ export default {
 
 
 </style>
+

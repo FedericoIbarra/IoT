@@ -39,7 +39,7 @@ export default {
       return {
         user: "usr1",
         info: null,
-        fetched: true,
+        fetched: false,
         weekData: [
           ["Mock 0", "Choya", 7, 22, 70, 18, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
           ["Mock 0", "Choya", 7, 22, 70, 19, 4, 2020, "Thu, 01 Jan 1970 00:00:01 GMT"],
@@ -126,11 +126,14 @@ export default {
         this.weekData = response.data;
 
         this.weekData.forEach(e => {
-          this.temp.labels.push(e[3] + '/' + e[4]);
-          this.temp.datasets[0].data.push(e[2]);
+          this.temp.labels.push(e[5] + '/' + e[6]);
+          this.temp.datasets[0].data.push(e[3]);
 
-          this.ph.labels.push(e[3] + '/' + e[4]);
-          this.ph.datasets[0].data.push(e[1]);
+          this.ph.labels.push(e[5] + '/' + e[6]);
+          this.ph.datasets[0].data.push(e[2]);
+
+          this.humidity.labels.push(e[5] + '/' + e[6]);
+          this.humidity.datasets[0].data.push(e[4]);
         });
         this.fetched = true;
       });

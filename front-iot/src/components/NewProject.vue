@@ -2,7 +2,7 @@
 
   <div>
 
-    <b-modal id="modalproj" title="Crear nuevo proyecto" ref="modalproj" hide-footer=true>
+    <b-modal id="modalproj" title="Crear nuevo proyecto" ref="modal-proj" hide-footer=true>
       <b-form @submit="onSubmit" v-if="show">
 
         <b-form-group id="nodeName"
@@ -136,7 +136,7 @@
       }
     },
     mounted () {
-      //this.form.user = sessionStorage.getItem('usr');
+      this.form.user = sessionStorage.getItem('usr');
     },
     methods: {
       onSubmit(evt) {
